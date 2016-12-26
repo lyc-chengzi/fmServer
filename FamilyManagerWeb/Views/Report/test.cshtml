@@ -1,0 +1,74 @@
+﻿@using FamilyManagerWeb.Controllers;
+@using FamilyManagerWeb.Models;
+@using System.Data;
+@using BaseFunction;
+@using System.Text;
+
+@{
+
+    Layout = null;
+}
+<div id="chartHolder" style="width: 650px;height: 450px"></div>
+
+<script type="text/javascript">
+    /* Title settings */
+    title = "月度支出分析（饼图）";
+    titleXpos = 390;
+    titleYpos = 85;
+
+    /* Pie Data */
+    pieRadius = 130;
+    pieXpos = 180;
+    pieYpos = 200;
+    pieData = [
+    @{
+        //List<FeeItem> feeList = WebComm.GetFeeItemList().Where(l => l.FeeItemClassID == 0).OrderBy(l=>l.FeeItemID).ToList();
+        StringBuilder sql = new StringBuilder("");
+        sql.Append("select a.* from ( ");
+        sql.Append("select sum(imoney) as imoney,feeitemid,feeitemname from apply_sub  ");
+        sql.Append("where feeitemid > 0 ");
+        sql.Append("group by feeitemid,feeitemname) a ");
+        sql.Append("order by a.feeitemid ");
+        DataTable dt = LycSQLHelper.GetDataTable(sql.ToString());
+        foreach (DataRow item in dt.Rows)
+        {
+            <text>@(item["imoney"].ToString()),</text>
+        }
+    }        
+    1
+    ];
+    pieLegend = [
+    @{
+        foreach (DataRow item in dt.Rows)
+        {
+            <text>"%%.%% – @(item["feeitemname"].ToString())",</text>
+        }
+    }
+    "其他"
+    ];
+
+    pieLegendPos = "east";
+
+    var r = Raphael("chartHolder");
+
+    r.text(titleXpos, titleYpos, title).attr({ "font-size": 20 });
+
+    var pie = r.piechart(pieXpos, pieYpos, pieRadius, pieData, { legend: pieLegend, legendpos: pieLegendPos });
+    pie.hover(function () {
+        this.sector.stop();
+        this.sector.scale(1.1, 1.1, this.cx, this.cy);
+        if (this.label) {
+            this.label[0].stop();
+            this.label[0].attr({ r: 7.5 });
+            this.label[1].attr({ "font-weight": 800 });
+        }
+    }, function () {
+        this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, "bounce");
+        if (this.label) {
+            this.label[0].animate({ r: 5 }, 500, "bounce");
+            this.label[1].attr({ "font-weight": 400 });
+        }
+    });
+
+
+</script>

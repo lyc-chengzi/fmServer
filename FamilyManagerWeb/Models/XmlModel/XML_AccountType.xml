@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AccountTypes>
+  <AccountType>
+    <TypeID>1</TypeID>
+    <TypeName>普通账户</TypeName>
+  </AccountType>
+  <AccountType>
+    <TypeID>2</TypeID>
+    <TypeName>游戏账户</TypeName>
+  </AccountType>
+  <AccountType>
+    <TypeID>3</TypeID>
+    <TypeName>银行账户</TypeName>
+  </AccountType>
+  <AccountType>
+    <TypeID>4</TypeID>
+    <TypeName>网购账户</TypeName>
+  </AccountType>
+</AccountTypes>

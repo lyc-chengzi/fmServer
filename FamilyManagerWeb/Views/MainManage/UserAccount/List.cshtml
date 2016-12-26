@@ -1,0 +1,105 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.UserAccount>
+@using FamilyManagerWeb.Models;
+@using FamilyManagerWeb.Controllers;
+@{
+    
+    Layout = null;    
+}
+
+<form id="pagerForm" method="post" action="@Url.Action("List","UserAccount")">
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="@ViewBag.pageSize" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+</form>
+
+
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" action="@Url.Action("List","UserAccount")" method="post">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>				
+				<td>
+					账户名称：@Html.TextBox("cname", "")
+				</td>                
+                <td>
+					账户类型：
+				</td>	
+                <td>
+                    @Html.DropDownList("ctypeID",(IEnumerable<SelectListItem>)ViewBag.accountList,(IDictionary<string,object>)ViewBag.attrAccountType)
+                </td>
+                @{
+                User loginUser = Session[SessionList.FamilyManageUser.ToString()] as User;
+                
+                if (UserPower.adminUserCode.Contains(loginUser.cUserCode))
+                {                    				
+				    <td>
+					    用户：
+                    </td>
+                    <td>                        
+                        @Html.DropDownList("UserID",(IEnumerable<SelectListItem>)ViewBag.userList,(Dictionary<string,object>)ViewBag.attruser)
+                    </td>
+			        
+                }
+                
+                }			
+			</tr>
+		</table>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button id="btn_UserList_Query" type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="@Url.Action("toCreate","UserAccount")" target="dialog" rel="addUserDialog" width="400" height="400" title="添加用户账户"><span>添加</span></a></li>
+            <li><a class="edit" href="@Url.Action("toEdit","UserAccount")/{uaID}" target="dialog" title="修改用户账户信息" height="400"><span>修改</span></a></li>
+			<li><a class="delete" href="@Url.Action("Delete","UserAccount")" target="selectedTodo"  rel="ids" title="确定要删除吗?"><span>删除</span></a></li>			
+			<li class="line">line</li>
+			<li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th width="30"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th width="100" align="center">账户类型</th>
+				<th width="100" align="center">账户名称</th>
+                <th width="100" align="center">账户ID</th>
+                <th width="100" align="center">账户密码</th>
+                <th width="100" align="center">密保信息</th>
+                <th width="200" align="center">备注信息</th>
+			</tr>
+		</thead>
+		<tbody>
+            @foreach (var item in Model)
+            {
+                <tr target="uaID" rel="@item.ID">
+                    <td style="text-align:center;"><input name="ids" value="@item.ID" type="checkbox" /></td>				    
+				    <td>@item.ctypeName</td>		
+                    <td>@item.cname</td>	
+                    <td>@item.loginID</td>	
+                    <td>@item.loginPwd</td>
+                    <td>@item.mibao</td>
+                    <td>@item.cadds</td>						    
+			    </tr>
+            }
+            
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>每页显示 @ViewBag.pageSize 条</span>
+			
+			<span>，共 @ViewBag.recordNo 条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="@ViewBag.recordNo" numPerPage="@ViewBag.pageSize" pageNumShown="@ViewBag.pageNumShown" currentPage="@ViewBag.CurrentPageNo"></div>
+
+	</div>
+</div>

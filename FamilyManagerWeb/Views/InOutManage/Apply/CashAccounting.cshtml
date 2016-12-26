@@ -1,0 +1,76 @@
+﻿@model FamilyManagerWeb.Models.Apply_Sub
+
+
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    function checkFee2013924(obj) {
+        var $box = navTab.getCurrentPanel();
+        $.post("@Url.Action("GetFlowTypeInOut","Apply")", { "FlowID": $(obj).val() }, function (data) {
+            if (data == "out") {
+                $("#FeeItemCheck", $box).show();
+                $("#FeeItemName", $box).addClass("required");
+            } else if (data == "in") {
+                $("#FeeItemCheck", $box).hide();
+                $("#FeeItemName", $box).removeClass("required");
+            }
+        }, "text");
+    }
+</script>
+
+<div class="pageContent">	
+	<form method="post" action="@Url.Action("DoCashAccounting", "Apply")" class="pageForm required-validate" onsubmit="return validateCallback(this)">
+        <div class="formBar">
+			<ul style="float:left">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+		<div class="pageFormContent nowrap" layoutH="56">     
+            <dl>
+				<dt>记账日期：</dt>
+				<dd>
+                    <input type="text" name="ApplyDate" class="date textInput readonly focus required" datefmt="yyyy-MM-dd" />	
+				</dd>
+			</dl>
+            <dl>
+				<dt>金额：</dt>
+				<dd>
+                    <input type="text" alt="请输入数字" name="NowMoney" maxlength="26" class="required number" /> 
+				</dd>
+			</dl>         
+			<dl>
+				<dt>资金流动类型：</dt>
+				<dd>
+                    <select class="combox" name="FlowTypeID" onchange="checkFee2013924(this)">
+                        <option value="-1">请选择</option>
+                        @foreach (var item in ViewBag.FlowType)
+                        {
+                            <option value="@item.ID">@item.Name</option>
+                        }
+                    </select>					
+				</dd>
+			</dl>
+            <dl id="FeeItemCheck" style="display:none;">
+                <dt>费用项目：</dt>
+                <dd>
+                    <input id="FeeItemID" name="search_Fee.FeeItemID" value="" type="hidden" lookupgroup="search_Fee" />
+                    <input id="FeeItemName" name="search_Fee.FeeItemName" value="" type="text" lookupgroup="search_Fee" />
+                    <a class="btnLook" href="@Url.Action("ShowFeeItemList", "Dialog")" lookupGroup="search_Fee">查找带回</a>
+                </dd>
+            </dl>            
+            <dl>
+				<dt>备注信息：</dt>
+				<dd>
+                    <textarea name="cAdd" cols="80" row="2" class="textInput focus"></textarea>
+				</dd>
+			</dl>
+			<div class="divider"></div>			
+		</div>
+		
+       
+    </form>
+</div>
+
+

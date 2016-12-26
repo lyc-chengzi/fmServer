@@ -1,0 +1,120 @@
+﻿@using FamilyManagerWeb.Controllers;
+@{
+    
+    ViewBag.Title = "ReportHome";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+
+    ApplyMainReprot amreport = (ApplyMainReprot)ViewBag.ApplyMainReprot;
+}
+@section styles
+{
+    <style>
+        .row a {
+            cursor: pointer;
+        }
+        .panel-height-normal {
+            height:350px; overflow: auto
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">当月消费情况</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="panel panel-primary panel-height-normal">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">汇总</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div>
+                                        <h4>现金消费：</h4>
+                                        <a id="a_TotalCashApply">@amreport.TotalCashApply</a>
+                                    </div>
+                                    <div>
+                                        <h4>信用卡消费：</h4>
+                                        <a id="a_TotalXinYongKaApply">@amreport.TotalXinYongKaApply</a>
+                                    </div>
+                                    <div>
+                                        <h4>其他消费：</h4>
+                                        <a id="a_TotalOtherApply">@amreport.TotalOtherApply</a>
+                                    </div>
+                                    <div>
+                                        <h4>总消费：</h4>
+                                        <span id="a_TotalApply">@amreport.TotalApply</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="panel panel-primary panel-height-normal">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">明细</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="info_list">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>费用科目</th>
+                                                    <th>消费金额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#a_TotalCashApply').on('click', function () {                
+                getApplyInfo('cash');
+            });
+            $('#a_TotalXinYongKaApply').on('click', function () {
+                getApplyInfo('xyk');
+            });
+            $('#a_TotalOtherApply').on('click', function () {
+                getApplyInfo('other');
+            });
+        });
+
+        function getApplyInfo(type) {
+            var $table = $('#info_list');
+            var $list = $table.find('tbody').empty();
+            var html = '';
+            $.ajax({
+                url: '/Home/applyListWithReport',
+                type: 'POST',
+                dataType: 'json',
+                data: {type: type}
+            }).success(function (data) {
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<tr><td>'+(i+1)+'</td><td>' + data[i].FeeItemName + '</td><td>' + data[i].iMoney + '</td></tr>';
+                    }
+                    if (html) $list.append(html);
+                }
+            }).fail(function () {
+                alert('数据获取失败，请重试！');
+            });
+        }
+    </script>
+}

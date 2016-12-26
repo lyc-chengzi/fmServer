@@ -1,0 +1,14 @@
+﻿
+.lyc_new_InputImage { background-image: url(../../../images/button1.gif); }
+
+.lyc_alert { background-color: #e4ebf6; }
+.lyc_alert div.lyc_alert_Header_confirm {   border: 0px none #FFF; background: url(../../../images/alert/alertpanel_icon.png) 2px 4px no-repeat; }
+.lyc_alert div.lyc_alert_Header_warn {  border: 0px none #FFF; background: url(../../../images/alert/alertpanel_icon.png) 2px 4px no-repeat; }
+.lyc_alert div.lyc_alert_Header_success { border: 0px none #FFF; background: url(../../../images/alert/alertpanel_icon.png) 2px -97px no-repeat; }
+.lyc_alert div.lyc_alert_Header_info {  border: 0px none #FFF; background: url(../../../images/alert/alertpanel_icon.png) 2px 4px no-repeat; }
+.lyc_alert div.lyc_alert_Header_error {border: 0px none #FFF; background: url(../../../images/alert/alertpanel_icon.png) 2px -47px no-repeat; }
+.lyc_alert div.lyc_alert_Content { color:#07519A; border: 1px solid #88a0be; background-color: #ffffff; border-top: solid 1px #b8d0d6; border-bottom: solid 1px #b8d0d6; border-left: solid 1px #b8d0d6; border-right: solid 1px #b8d0d6;}
+.lyc_alert div.lyc_alert_Footer {border: 0px none #FFF; }
+
+.lyc_divhidden { background: #EDF1F8; border: 0px solid #849BCA;  }
+

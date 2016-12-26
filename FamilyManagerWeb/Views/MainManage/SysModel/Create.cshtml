@@ -1,0 +1,118 @@
+﻿@model FamilyManagerWeb.Models.SysModel
+
+@{
+    Layout = null;
+
+}
+<div class="pageContent">
+
+    <form method="post" action="@Url.Action("Create", "SysModel")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent nowrap" layouth="60">
+            <dl>
+                <dt>菜单名称
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelName)
+                </dd>
+            </dl>
+            <dl>
+                <dt>物理地址
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelPhyURL)
+                </dd>
+            </dl>
+            <dl>
+                <dt>路由名称
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelRouteName)
+                </dd>
+            </dl>
+
+            <dl>
+                <dt>控制器
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelController)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    Action
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelAction)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    对应rel
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelRel)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    target方式(navTabl or dialog)
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelTarget)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    上级菜单
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelClassID)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    排序序号
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.SysModelLevel)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    是否末级菜单
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.IsLast)
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    是否有Action
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.IsHaveAction)
+                </dd>
+            </dl>
+
+            <div class="divider"></div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">提交</button></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        @Html.HiddenFor(model => model.ID)
+    </form>
+
+</div>

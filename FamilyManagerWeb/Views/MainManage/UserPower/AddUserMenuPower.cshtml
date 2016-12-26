@@ -1,0 +1,77 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.ViewModels.UserMenuPowerEntity>
+
+@using FamilyManagerWeb.Models;
+@using FamilyManagerWeb.Controllers;
+@{
+    
+    Layout = null;
+    
+}
+<script type="text/javascript">
+    function kkk() {
+        
+        //var json = arguments[0], result = "";
+        ////	alert(json.checked);
+        //$(json.items).each(function (i) {
+        //    asdfdcc33(this.value, $box);
+        //});
+        ////获取本次用户选择的菜单
+        //result = result.substring(0, result.length - 1);
+
+        var $box = navTab.getCurrentPanel();
+        var strJson = "";
+        var $allTheCheck = $("#checkedModelList", $box);
+        //将选中集合清空
+        $allTheCheck.val(strJson);
+        var si = $("#checkModelDiv div.ckbox", $box);
+        //循环选中集合，重新赋值json数据
+        si.each(function (i, entity) {
+            var $this = $(this);
+            if ($this.hasClass("indeterminate") || $this.hasClass("checked")) {
+                strJson += $this.find("input")[0].value + ",";
+            }
+        });
+        strJson = strJson.substr(0, strJson.length - 1);
+        $allTheCheck.val(strJson);
+    }
+
+    
+</script>
+<div class="pageContent sortDrag" selector="h1">
+    <form method="post" action="@Url.Action("addmp","UserPower")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="56">
+			<div class="panel collapse" minH="100" defH="90">
+		        <h1>用户信息</h1>
+		        <div >
+                    <input id="checkedModelList" name="checkedModelList" type="hidden" value="" />
+                    <input id="UserID" name="UserID" type="hidden" value="@ViewBag.UserID" />
+			        <p>
+                        <label>用户姓名：</label>
+                        @Html.Label("cUserName",(string)ViewBag.cUserName)
+			        </p>
+                    <p>
+                        <label>用户账号：</label>
+                        @Html.Label("cUserName",(string)ViewBag.cUserCode)
+			        </p>
+		        </div>
+	        </div>         
+			
+            <div id="checkModelDiv" style=" float:left; display:block; margin:10px; overflow:auto; width:98%; height:auto; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#FFF;">
+                <p>请选择要添加权限的菜单</p>                
+                <ul class="tree treeFolder treeCheck expand" oncheck="kkk">
+	                @MvcHtmlString.Create(ViewBag.strTree)
+                </ul>                    
+            </div>
+                
+            
+            <div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

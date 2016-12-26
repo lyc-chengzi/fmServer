@@ -1,0 +1,94 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.ViewModels.UserMenuPowerEntity>
+
+@using FamilyManagerWeb.Models;
+@using FamilyManagerWeb.Controllers;
+@{
+    
+    Layout = null;    
+}
+<script type="text/javascript">
+
+    function showMenuPowerByUserID(obj) {
+        var $this = $(this);
+        var $box = navTab.getCurrentPanel();
+        var userID = $("#UserID", $box).val();
+        if (!userID || userID == "" || userID == "0") {
+            alertMsg.error('请先选择要添加权限的用户!');
+            return false;
+        }
+        //var options = {};
+        //options.max = eval($this.attr("max") || "true");
+        //options.mask = eval($this.attr("mask") || "false");
+        //options.maxable = eval($this.attr("maxable") || "true");
+        //options.minable = eval($this.attr("minable") || "true");
+        //options.fresh = eval($this.attr("fresh") || "true");
+        //options.resizable = eval($this.attr("resizable") || "true");
+        //options.drawable = eval($this.attr("drawable") || "true");
+        //options.close = true;
+        //options.param = $this.attr("param") || "";
+        //$.pdialog.open('@Url.Action("toAddPower", "UserPower")?userid=' + userID, "addUserMPDialog", "配置用户菜单权限", options);
+        navTab.openTab("addUserMPNavTab", "@Url.Action("toAddPower", "UserPower")?userid=" + userID, { title: "配置用户菜单权限", fresh: false, data: {} });
+    }
+</script>
+<div class="pageHeader">
+    <form onsubmit="return navTabSearch(this);" action="@Url.Action("List", "UserPower")" method="post">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>用户姓名：
+                    </td>
+                    <td style="padding-right: 0;">
+                        <input id="UserID" name="search_User.UserID" value="@ViewBag.userID" type="hidden" lookupGroup="search_User"/>
+                        <input id="cUserName" value="@ViewBag.userName" name="search_User.cUserName" type="text" lookupGroup="search_User"/>
+                    </td>
+                    <td>
+                        <a class="btnLook" href="@Url.Action("ShowUserList", "Dialog")" lookupGroup="search_User">查找带回</a>
+                    </td>
+                </tr>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button id="btn_Query" type="submit">查询</button></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" onclick="showMenuPowerByUserID()"><span>配置用户菜单权限</span></a></li>
+            <li class="line">line</li>
+            <li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targettype="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+        </ul>
+    </div>
+    <table class="table" width="100%" layouth="138">
+        <thead>
+            <tr>
+                <th width="30">
+                    <input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th width="100" align="center">用户姓名</th>
+                <th width="300" align="center">菜单名称</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr target="userbankID" rel="@item.ID">
+                    <td style="text-align: center;">
+                        <input name="ids" value="@item.ID" type="checkbox" /></td>
+                    <td>@item.UserName</td>
+                    <td>@item.MenuName</td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,67 @@
+﻿@using System.Data;
+@using BaseFunction;
+@using System.Text;
+
+@{
+    Layout = "~/Views/Shared/_Layout_report.cshtml";
+    ViewBag.Title = "报表";
+
+    StringBuilder sql = new StringBuilder("");
+    sql.Append("select a.* from ( ");
+    sql.Append("select sum(imoney) as imoney,feeitemid,feeitemname from apply_sub  ");
+    sql.Append("where feeitemid > 0 ");
+    sql.Append("group by feeitemid,feeitemname) a ");
+    sql.Append(" where imoney > 1000 ");
+    sql.Append("order by a.imoney desc ");
+    DataTable dt = LycSQLHelper.GetDataTable(sql.ToString());
+    int count = dt.Rows.Count;
+}
+
+@section myCSS{
+    
+}
+
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            chart: { plotBackgroundColor: null, plotBorderWidth: null, plotShadow: false },
+            title: { text: '历史记账汇总' },
+            tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>' },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function () {
+                            console.log(this);
+                            return '<b>' + this.point.name + '</b>: ' + this.y + ' 元';
+                        }
+                    },
+                    showInLegend: true
+                }
+            }, series: [{
+                type: 'pie',
+                name: '占比',
+                data: [
+                    @for (int i = 0; i < dt.Rows.Count - 1; i++ )
+                    {
+                        <text>['</text>@(dt.Rows[i]["feeitemname"].ToString())<text>', @(dt.Rows[i]["imoney"].ToString())],</text>
+                    }
+                    ['@(dt.Rows[count-1]["feeitemname"].ToString())', @(dt.Rows[count-1]["imoney"].ToString())]
+
+                    ]
+                }]
+        });
+    });
+    </script>    
+}
+
+<div style="width:100%; height:100px;">
+
+</div>
+
+<div id="container" style="width:100%; height:600px;"></div>

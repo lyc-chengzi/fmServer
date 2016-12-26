@@ -1,0 +1,61 @@
+﻿@model FamilyManagerWeb.Models.UserBank
+@{Layout = null;}
+
+<div class="pageContent">
+	
+	<form method="post" action="@Url.Action("doEdit","UserBank")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">            
+			<dl>
+				<dt>银行：</dt>
+				<dd>
+                    <input id="BankID" name="search_bank.BankID" value="@Model.BankID" type="hidden"/>
+				    <input id="BankName" class="required" name="search_bank.BankName" type="text" lookupGroup="search_bank" value="@Model.BankName"/>
+				    <a class="btnLook" href="@Url.Action("ShowBankList","Dialog")" lookupGroup="search_bank">查找带回</a>
+					
+				</dd>
+			</dl>
+			<dl>
+				<dt>银行卡号：</dt>
+				<dd>
+                    <input type="text" id="BankNo" name="BankNo" value="@Model.BankNo" maxlength="26" class="required" /> 
+				</dd>
+			</dl>
+			<dl>
+				<dt>银行卡类型：</dt>
+				<dd>
+                    <select class="combox" name="BankCardType">
+                        @foreach (var item in ViewBag.CardTypeList)
+                        {
+                            if (Model.BankCardType==item)
+                            {
+                                <option value="@item" selected="selected">@item</option>
+                            }
+                            else
+                            {
+                                <option value="@item">@item</option>
+                            }
+                            
+                        }
+                    </select>
+					
+				</dd>
+			</dl>
+            <dl>
+				<dt>最新余额：</dt>
+				<dd>
+                    <input type="text" id="NowMoney" name="NowMoney" value="@Model.NowMoney" maxlength="26" class="required" /> 
+				</dd>
+			</dl>
+			<div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+        @Html.Hidden("ID", Model.ID)
+        @Html.Hidden("CreateDate", Model.CreateDate)
+	</form>
+    
+</div>

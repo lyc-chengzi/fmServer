@@ -1,0 +1,63 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.Apply_Sub>
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+
+    function applySubList_ShowCAdd() {
+        $("#editCadd", navTab.getCurrentPanel()).trigger("click");
+    }
+</script>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="delete" href="@Url.Action("DeleteById","ApplySub")/{sid_applySub}" target="ajaxTodo"  rel="ids" title="确定要删除吗?"><span>删除</span></a></li>
+            <li><a class="icon" href="@Url.Action("TKPage", "ApplySub")/{sid_applySub}" ta target="dialog" rel="ids" title="确定要退款吗?"><span>退款</span></a></li>
+            <li><a id="editCadd" class="edit" href="@Url.Action("ToUpdateAdd","ApplySub")/{sid_applySub}" target="dialog"  rel="ids"><span>修改备注</span></a></li>
+			<li class="line">line</li>			
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				
+				<th width="100" align="center">记账日期</th>
+				<th width="80" align="center">业务类型</th>
+				<th width="120" align="center">资金流动类型</th>
+				<th width="80" align="center">出入账</th>
+				<th width="80" align="center">金额</th>
+				<th width="100">备注信息</th>
+				<th width="100">创建日期</th>
+			</tr>
+		</thead>
+		<tbody>
+            @foreach (var item in Model)
+            {
+                <tr target="sid_applySub" rel="@item.ID">
+                    
+				    <td>@item.Apply_Main.ApplyDate.ToLongDateString()</td>
+				    <td>@if (item.CashOrBank == 0) { <text>现金业务</text>}else{<text>银行业务</text>}</td>
+				    <td>@item.FlowTypeName</td>
+				    
+                        @if (item.InOutType == "in") 
+                        { 
+                            <td style="color:#0a7628;">收入</td>
+                        }
+                        else if (item.InOutType == "out")
+                        { 
+                            <td style="color:#f00;">支出 -- @item.FeeItemName</td>
+                        }
+                        else
+                        {
+                            <td>@item.InOutType</td>
+                        }
+				    
+				    <td>@item.iMoney</td>
+				    <td ondblclick="applySubList_ShowCAdd()">@item.CAdd</td>
+				    <td>@item.CreateDate</td>
+			    </tr>
+            }
+            
+		</tbody>
+	</table>
+</div>

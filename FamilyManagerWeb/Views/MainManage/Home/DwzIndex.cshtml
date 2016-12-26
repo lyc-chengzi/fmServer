@@ -1,0 +1,325 @@
+﻿@using FamilyManagerWeb.Controllers;
+@using FamilyManagerWeb.Models;
+@using System.Data;
+@using BaseFunction;
+@{
+    Layout = null;
+    FamilyCaiWuDBEntities db = new FamilyCaiWuDBEntities();
+    List<SysModel> menuList = new List<SysModel>();
+    User loginUser = Session[SessionList.FamilyManageUser.ToString()] as User;
+    if (UserPower.adminUserCode.Contains(loginUser.cUserCode))
+    {
+        menuList = db.SysModels.Where(sm => sm.IsFlag == true).ToList();
+    }
+    else
+    {
+        //menuList = (from m in db.SysModels
+        //           join p in db.UserModelPowers on m.ID equals p.modelID
+        //           where p.userID == loginUser.ID
+        //           select new SysModel
+        //           {
+        //               ID = m.ID,
+        //               IsFlag = m.IsFlag,
+        //               IsHaveAction = m.IsHaveAction,
+        //               IsLast = m.IsLast,
+        //               SysModelAction = m.SysModelAction,
+        //               SysModelClassID = m.SysModelClassID,
+        //               SysModelController = m.SysModelController,
+        //               SysModelLevel = m.SysModelLevel,
+        //               SysModelName = m.SysModelName,
+        //               SysModelPhyURL = m.SysModelPhyURL,
+        //               SysModelRel = m.SysModelRel,
+        //               SysModelRouteName = m.SysModelRouteName,
+        //               SysModelTarget = m.SysModelTarget,
+        //               SysModelUrlPram = m.SysModelUrlPram
+        //           }).ToList();
+
+        string sql = "select * from sysmodels m inner join usermodelpower p on m.id=p.modelid where m.isFlag=1 and p.userid=" + loginUser.ID;
+        DataTable dt = LycSQLHelper.GetDataTable(sql);
+        foreach (DataRow dr in dt.Rows)
+        {
+            SysModel m = new SysModel();
+            m.ID = Convert.ToInt32(dr["ID"].ToString());
+            m.IsFlag = dr["IsFlag"].ToString()=="False"?false:true;
+            m.IsHaveAction = dr["IsHaveAction"].ToString() == "False" ? false : true;
+            m.IsLast = dr["IsLast"].ToString() == "False" ? false : true;
+            m.SysModelAction = dr["SysModelAction"].ToString();
+            m.SysModelClassID = Convert.ToInt32(dr["SysModelClassID"].ToString());
+            m.SysModelController = dr["SysModelController"].ToString();
+            m.SysModelLevel = Convert.ToInt32(dr["SysModelLevel"].ToString());
+            m.SysModelName = dr["SysModelName"].ToString();
+            m.SysModelPhyURL = dr["SysModelPhyURL"].ToString();
+            m.SysModelRel = dr["SysModelRel"].ToString();
+            m.SysModelRouteName = dr["SysModelRouteName"].ToString();
+            m.SysModelTarget = dr["SysModelTarget"].ToString();
+            m.SysModelUrlPram = dr.IsNull("SysModelUrlPram") == true ? null : dr["SysModelUrlPram"].ToString();
+            menuList.Add(m);
+        }
+
+    }
+    db.Dispose();
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>家庭财务系统</title>
+
+    <link href="@Styles.Url("~/Content/dwzThemes/default/style.css")" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="@Styles.Url("~/Content/dwzThemes/css/core.css")" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="@Styles.Url("~/Content/dwzThemes/css/print.css")" rel="stylesheet" type="text/css" media="print"/>
+    <link href="@Styles.Url("~/Content/uploadify/css/uploadify.css")" rel="stylesheet" type="text/css" media="screen"/>
+    <!--[if IE]>
+    <link href="@Styles.Url("~/Content/dwzThemes/css/ieHack.css")" rel="stylesheet" type="text/css" media="screen"/>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+    <script src="@Scripts.Url("~/Scripts/dwz/speedup.js")" type="text/javascript"></script>
+    <![endif]-->
+
+    <script src="@Scripts.Url("~/Scripts/dwz/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/jquery.cookie.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/jquery.validate.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/jquery.bgiframe.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Content/xheditor/xheditor-1.1.14-zh-cn.min.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Content/uploadify/scripts/jquery.uploadify.js")" type="text/javascript"></script>
+    <!-- svg图表  supports Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+ and Internet Explorer 6.0+ -->
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/raphael.js")"></script>
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/g.raphael.js")"></script>
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/g.bar.js")"></script>
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/g.line.js")"></script>
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/g.pie.js")"></script>
+    <script type="text/javascript" src="@Scripts.Url("~/Scripts/dwz/chart/g.dot.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.core.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.util.date.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.validate.method.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.regional.zh.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.barDrag.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.drag.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.tree.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.accordion.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.ui.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.theme.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.switchEnv.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.alertMsg.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.contextmenu.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.navTab.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.tab.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.resize.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.dialog.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.dialogDrag.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.sortDrag.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.cssTable.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.stable.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.taskBar.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.ajax.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.pagination.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.database.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.datepicker.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.effects.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.panel.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.checkbox.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.history.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.combox.js")" type="text/javascript"></script>
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.print.js")" type="text/javascript"></script>
+
+    <script src="@Scripts.Url("~/Scripts/dwz/dwz.regional.zh.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            DWZ.init("/dwz.frag.xml", {
+                loginUrl: "@Url.Action("Login", "Dialog")", loginTitle: "登录",	// 弹出登录对话框
+                //		loginUrl:"login.html",	// 跳到登录页面
+                statusCode: { ok: 200, error: 300, timeout: 301 }, //【可选】
+                pageInfo: { pageNum: "pageNum", numPerPage: "numPerPage", orderField: "orderField", orderDirection: "orderDirection" }, //【可选】
+                debug: false,	// 调试模式 【true|false】
+                callback: function () {
+                    initEnv();
+                    $("#themeList").theme({ themeBase: "/Content/dwzThemes" }); // 
+                }
+            });
+
+            $("#a_LogOut").click(function () {
+                if (window.confirm("确定要退出吗?")) {
+                    $.post("@Url.Action("LogOut", "Home")", "", function (data) {
+                        if (data.result == "s") {
+                            location.href = "@Url.Action("toLogin", "Home")";
+                        }
+
+                    }, "json");
+                }
+                return false;
+            });
+
+
+        });
+
+    </script>
+</head>
+<body scroll="no">
+    <div id="layout">
+        <div id="header">
+            <div class="headerNav">
+                <a class="logo" href="#">标志</a>
+                <ul class="nav">
+                    <li id="switchEnvBox"><a href="javascript:">（<span>北京</span>）切换城市</a>
+                        <ul>
+                            <li><a href="sidebar_1.html">北京</a></li>
+                            <li><a href="sidebar_2.html">上海</a></li>
+                            <li><a href="sidebar_2.html">南京</a></li>
+                            <li><a href="sidebar_2.html">深圳</a></li>
+                            <li><a href="sidebar_2.html">广州</a></li>
+                            <li><a href="sidebar_2.html">天津</a></li>
+                            <li><a href="sidebar_2.html">杭州</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://me.alipay.com/dwzteam" target="_blank">捐赠</a></li>
+                    <li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
+                    <li><a href="http://www.cnblogs.com/dwzjs" target="_blank">博客</a></li>
+                    <li><a href="http://weibo.com/dwzui" target="_blank">微博</a></li>
+                    <li><a href="http://bbs.dwzjs.com" target="_blank">论坛</a></li>
+                    <li><a id="a_LogOut" href="#">退出</a></li>
+                </ul>
+                <ul class="themeList" id="themeList">
+                    <li theme="default">
+                        <div class="selected">蓝色</div>
+                    </li>
+                    <li theme="green">
+                        <div>绿色</div>
+                    </li>
+                    <!--<li theme="red"><div>红色</div></li>-->
+                    <li theme="purple">
+                        <div>紫色</div>
+                    </li>
+                    <li theme="silver">
+                        <div>银色</div>
+                    </li>
+                    <li theme="azure">
+                        <div>天蓝</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- navMenu -->
+
+        </div>
+
+        <div id="leftside">
+            <div id="sidebar_s">
+                <div class="collapse">
+                    <div class="toggleCollapse">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar">
+                <div class="toggleCollapse">
+                    <h2>主菜单</h2>
+                    <div>收缩</div>
+                </div>
+
+                <div class="accordion" fillspace="sidebar">
+                    @*加载第一级菜单*@
+                    @foreach (SysModel item in menuList.Where(m => m.SysModelClassID == 0).OrderBy(m => m.SysModelLevel).ToList())
+                    {
+                        <div class="accordionHeader">
+                            <h2><span>Folder</span>@item.SysModelName</h2>
+                        </div>
+                        <div class="accordionContent">
+                            <ul class="tree treeFolder">
+                                @*加载第二级菜单，如果是文件夹，则继续foreach查找下一级*@
+                                @foreach (SysModel subItem in menuList.Where(m => m.SysModelClassID == item.ID).OrderBy(m => m.SysModelLevel).ToList())
+                                {
+                                    //如果不是末级菜单，还要继续循环
+                                    if (subItem.IsLast == false)
+                                    {
+                                    <li>
+                                        <a>@subItem.SysModelName</a>
+                                        <ul>
+                                            @*加载第三级菜单*@
+                                            @foreach (SysModel subItem2 in menuList.Where(m => m.SysModelClassID == subItem.ID).OrderBy(m => m.SysModelLevel).ToList())
+                                            {
+                                                if (subItem2.IsLast == false)
+                                                {
+                                                <li>
+                                                    <a>@subItem2.SysModelName</a>
+                                                    <ul>
+                                                        @*如果还有下一级菜单，在这里加载*@
+                                                        <li><a href="javascript:;">无菜单</a></li>
+                                                    </ul>
+                                                </li>
+                                                }
+                                                else
+                                                {
+                                                    //如果是末级菜单，而且有自定义参数的
+                                                    if (subItem2.SysModelUrlPram != null)
+                                                    { 
+                                                <li><a href="@Url.Action(subItem2.SysModelAction, subItem2.SysModelController)?@subItem2.SysModelUrlPram " target="@(subItem2.SysModelTarget!="dialog"?"navTab":"dialog")" rel="@subItem2.SysModelRel">@subItem2.SysModelName</a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        //只是末级菜单，没有自定义参数
+                                                <li><a href="@Url.Action(subItem2.SysModelAction, subItem2.SysModelController)" target="@(subItem2.SysModelTarget!="dialog"?"navTab":"dialog")" rel="@subItem2.SysModelRel" @if (subItem2.SysModelTarget == "iframe") { <text> external="true" </text>  }>@subItem2.SysModelName</a></li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                    }
+                                    else
+                                    {
+                                        //如果是末级菜单，而且有自定义参数的
+                                        if (subItem.SysModelUrlPram != null)
+                                        { 
+                                    <li><a href="@Url.Action(subItem.SysModelAction, subItem.SysModelController)?@subItem.SysModelUrlPram " target="@(subItem.SysModelTarget!="dialog"?"navTab":"dialog")" rel="@subItem.SysModelRel">@subItem.SysModelName</a></li>
+                                        }
+                                        else
+                                        {
+                                            //只是末级菜单，没有自定义参数
+                                    <li><a href="@Url.Action(subItem.SysModelAction, subItem.SysModelController)" target="@(subItem.SysModelTarget!="dialog"?"navTab":"dialog")" rel="@subItem.SysModelRel" @if (subItem.SysModelTarget == "iframe") { <text> external="true" </text>  }>@subItem.SysModelName</a></li>
+                                        }
+                                    }
+
+                                }
+
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div id="container">
+            <div id="navTab" class="tabsPage">
+                <div class="tabsPageHeader">
+                    <div class="tabsPageHeaderContent">
+                        <!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
+                        <ul class="navTab-tab">
+                            <li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">我的主页</span></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="tabsLeft">left</div>
+                    <!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
+                    <div class="tabsRight">right</div>
+                    <!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
+                    <div class="tabsMore">more</div>
+                </div>
+                <ul class="tabsMoreList">
+                    <li><a href="javascript:;">我的主页</a></li>
+                </ul>
+                <div class="navTab-panel tabsPageContent layoutBox">
+                    <div class="page unitBox" style="height:100%;">                        
+                        <iframe width="100%" height="100%" class="share_self" frameborder="0" scrolling="no" src="/Home/ReportHome"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">Copyright &copy; 2010 <a href="demo_page2.html" target="dialog">DWZ团队</a> Tel：010-52897073</div>
+
+</body>
+</html>

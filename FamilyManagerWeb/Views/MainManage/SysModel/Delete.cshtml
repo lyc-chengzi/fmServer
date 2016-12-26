@@ -1,0 +1,74 @@
+﻿@model FamilyManagerWeb.Models.SysModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>SysModel</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelPhyURL)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelPhyURL)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelRouteName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelRouteName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelController)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelController)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelAction)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelAction)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelClassID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelClassID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsLast)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsLast)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsHaveAction)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsHaveAction)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

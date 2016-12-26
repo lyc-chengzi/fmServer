@@ -1,0 +1,119 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.SysModel>
+
+@{
+    Layout = null;
+}
+
+<form id="pagerForm" method="post" action="@Url.Action("Index", "SysModel")">
+    <input type="hidden" name="status" value="${param.status}">
+    <input type="hidden" name="keywords" value="${param.keywords}" />
+    <input type="hidden" name="pageNum" value="1" />
+    <input type="hidden" name="numPerPage" value="@ViewBag.pageSize" />
+    <input type="hidden" name="orderField" value="${param.orderField}" />
+</form>
+
+
+<div class="pageHeader">
+    <form onsubmit="return navTabSearch(this);" action="@Url.Action("Index", "SysModel")" method="post">
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>上级ID：</td>
+                    <td>@Html.TextBox("SysModelClassID")</td>
+                </tr>
+            </table>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button id="btn_UserList_Query" type="submit">查询</button></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="@Url.Action("Create", "SysModel")" target="navTab" rel="addSysModelNavTab" title="添加菜单"><span>添加</span></a></li>
+            <li><a class="edit" href="@Url.Action("toEdit", "SysModel")/{SysModleID}" target="navTab" title="修改菜单信息" ><span>修改</span></a></li>
+            <li><a class="delete" href="@Url.Action("Delete", "SysModel")" target="selectedTodo"  rel="ids" title="确定要删除吗?"><span>删除</span></a></li>
+            <li class="line">line</li>
+            
+        </ul>
+    </div>
+    <table class="table" width="100%" layouth="138">
+        <thead>
+            <tr>
+                <th width="30" style="text-align:center;">
+                    <input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th width="30">ID</th>
+                <th width="100" align="center">菜单名称</th>
+                <th width="200" align="center">物理地址</th>
+                <th width="100" align="center">对用路由Name</th>
+                <th width="100" align="center">对应控制器</th>
+                <th width="100" align="center">对应Action</th>
+                <th width="100" align="center">上级目录ID</th>
+                <th width="100" align="center">排序</th>
+                <th width="80" align="center">是否末级</th>
+                <th width="80" align="center">是否有Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr target="SysModleID" rel="@item.ID">
+                    <td>
+                        <input name="ids" value="@item.ID" type="checkbox" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelPhyURL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelRouteName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelController)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelAction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelClassID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SysModelLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsLast)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsHaveAction)
+                    </td>                    
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>每页显示 @ViewBag.pageSize 条</span>
+
+            <span>，共 @ViewBag.recordNo 条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="@ViewBag.recordNo" numPerPage="@ViewBag.pageSize" pageNumShown="@ViewBag.pageNumShown" currentPage="@ViewBag.CurrentPageNo"></div>
+
+    </div>
+</div>
+

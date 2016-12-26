@@ -1,0 +1,125 @@
+﻿@model FamilyManagerWeb.Models.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>风险管理平台</title>
+    <link href="@Url.Content("~/Content/dwzThemes/css/login.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/dwz/jquery-1.7.2.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/lycJqueryLib/jqueryUI/external/jquery.cookie.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            //判断用户是否记住账号，如果以前记住账号则加载账号
+            if ($.cookie("fmsys_UserLoginCode")) {
+                $("#cUserCode").val($.cookie("fmsys_UserLoginCode"));
+                $("#remanberLoginCode")[0].checked = true;
+            }
+            
+
+            $(document).keydown(function (event) {
+                if (event.keyCode == "13") {
+                    $("#btnLogin").click();
+                }
+                
+            });
+            $("#btnLogin").click(function () {
+                $(this).attr("disabled", "disabled");
+                $("#login_wait").show();
+                //ajax登录
+                
+                $.post("@Url.Action("doLogin","Home")",
+                    { "cUserCode": $("#cUserCode").val(), "cUserPwd": $("#cUserPwd").val() },
+                    function (data) {
+                        
+                        if (data.result == "s") {
+                            //如果用户选择记住账户则写入cookie，否则删除cookie
+                            if ($("#remanberLoginCode").is(":checked")) {
+								$.cookie("fmsys_UserLoginCode", $("#cUserCode").val(), {expires: 365});
+                                
+                            } else {
+                                $.cookie("fmsys_UserLoginCode", null, {expires: -1});
+                            }
+                        
+                            alert("登录成功！");
+                            location.href = "@Url.Action("DwzIndex","Home")";
+                        } else {
+                            alert("用户名或密码输入错误，请重新输入！");
+                            $("#btnLogin")[0].disabled = false;
+                        }
+                    }, "json"
+                );
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div id="login">
+        <div id="login_header">
+            <h1 class="login_logo">
+                <a href="http://demo.dwzjs.com">
+                    <img src="@Url.Content("~/Content/dwzThemes/default/images/login_logo.gif")" /></a>
+            </h1>
+            <div class="login_headerContent">
+                <div class="navList">
+                    <ul>
+                        <li><a href="#">设为首页</a></li>
+                        <li><a href="http://bbs.dwzjs.com">反馈</a></li>
+                        <li><a href="doc/dwz-user-guide.pdf" target="_blank">帮助</a></li>
+                    </ul>
+                </div>
+                <h2 class="login_title">
+                    <img src="@Url.Content("~/Content/dwzThemes/default/images/login_title.png")" /></h2>
+            </div>
+        </div>
+        <div id="login_content">
+            <div class="loginForm">
+                <form >
+                    <p>
+                        <label>用户名：</label>
+                        <input type="text" id="cUserCode" name="cUserCode" size="20" class="login_input" />
+                    </p>
+                    <p>
+                        <label>密码：</label>
+                        <input type="password" id="cUserPwd" name="cUserPwd" size="20" class="login_input" />
+                    </p>
+                    <p>                        
+                        <input type="checkbox" id="remanberLoginCode" /><label for="remanberLoginCode">记住账号</label>
+                    </p>
+
+                    <div class="login_bar">
+                        <input id="btnLogin" class="sub" type="button" value=" " />
+                        <img id="login_wait" style="display:none;" alt="正在登陆" src="@Url.Content("~/Content/dwzThemes/default/images/progressBar/progressBar_m.gif")" />
+                    </div>
+                </form>
+            </div>
+            <div class="login_banner">
+                <img src="@Url.Content("~/Content/dwzThemes/default/images/login_banner.jpg")" /></div>
+            <div class="login_main">
+                <ul class="helpList">
+                    <li><a href="#">下载驱动程序</a></li>
+                    <li><a href="#">如何安装密钥驱动程序？</a></li>
+                    <li><a href="#">忘记密码怎么办？</a></li>
+                    <li><a href="#">为什么登录失败？</a></li>
+                </ul>
+                <div class="login_inner">
+                    <p>您可以使用 网易网盘 ，随时存，随地取</p>
+                    <p>您还可以使用 闪电邮 在桌面随时提醒邮件到达，快速收发邮件。</p>
+                    <p>在 百宝箱 里您可以查星座，订机票，看小说，学做菜…</p>
+                </div>
+            </div>
+        </div>
+        <div id="login_footer">
+            Copyright &copy; 2009 www.dwzjs.com Inc. All Rights Reserved.
+        </div>
+    </div>
+</body>
+</html>

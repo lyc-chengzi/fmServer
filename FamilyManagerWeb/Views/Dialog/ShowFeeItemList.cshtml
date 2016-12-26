@@ -1,0 +1,44 @@
+﻿@model IEnumerable<FamilyManagerWeb.Controllers.FeeItem>
+@using FamilyManagerWeb.Controllers;
+@using FamilyManagerWeb.Models;
+
+@{
+    Layout = null;
+    string str = WebComm.GetFeeitemTree();
+}
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul id="FeeItemTreeUL" class="tree">               
+            @MvcHtmlString.Create(str)
+		</ul>
+	</div>
+	
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+    @*
+        string cc = "<li><a href=\"javascript:\" onclick=\"$.bringBack({FeeItemID:'101', FeeItemName:'早饭'})\">早饭</a></li>";  
+    }
+    var $box = $.pdialog.getCurrent();
+    var treeUL = $("#FeeItemTreeUL", $box);
+    var $ULHtml = "@MvcHtmlString.Create(cc)";
+    
+    //$(treeUL).append($ULHtml);
+    *@
+</script>
+@*foreach (var i in Model.Where(m=>m.FeeItemClassID==0))
+            {
+                <li>
+                    <a href="javascript:">@i.FeeItemName</a>
+				    <ul>
+                        @foreach (var j in Model.Where(m=>m.FeeItemClassID==i.FeeItemID))
+                        {
+                            <li><a href="javascript:" onclick="$.bringBack({FeeItemID:'@j.FeeItemID', FeeItemName:'@j.FeeItemName'})">@j.FeeItemName</a></li>
+                        }					    					    
+				    </ul>
+			    </li>
+            } *@

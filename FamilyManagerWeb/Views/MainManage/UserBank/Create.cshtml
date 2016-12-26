@@ -1,0 +1,57 @@
+﻿@model FamilyManagerWeb.Models.UserBank
+@using FamilyManagerWeb.Controllers
+
+@{
+    Layout = null;
+}
+
+<div class="pageContent">
+	
+	<form method="post" action="@Url.Action("doCreate","UserBank")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">            
+			<dl>
+				<dt>银行：</dt>
+				<dd>
+                    <input id="BankID" name="search_bank.BankID" value="" type="hidden"/>
+				    <input id="BankName" class="required" name="search_bank.BankName" type="text" lookupGroup="search_bank"/>
+				    <a class="btnLook" href="@Url.RouteUrl(ControllerList.Default.ToString(), new { controller = "Dialog", action = "ShowBankList" })" lookupGroup="search_bank">查找带回</a>
+					
+				</dd>
+			</dl>
+			<dl>
+				<dt>银行卡号：</dt>
+				<dd>
+                    <input type="text" id="BankNo" name="BankNo" maxlength="26" class="required" /> 
+				</dd>
+			</dl>
+			<dl>
+				<dt>银行卡类型：</dt>
+				<dd>
+                    <select class="combox" name="BankCardType">
+                        @foreach (var item in ViewBag.CardTypeList)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+					
+				</dd>
+			</dl>
+            <dl>
+				<dt>最新余额：</dt>
+				<dd>
+                    <input type="text" id="NowMoney" name="NowMoney" maxlength="26" class="required" /> 
+				</dd>
+			</dl>
+			<div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+    
+</div>
+
+

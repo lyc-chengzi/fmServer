@@ -1,0 +1,71 @@
+﻿@model FamilyManagerWeb.Models.SysModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>SysModel</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelPhyURL)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelPhyURL)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelRouteName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelRouteName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelController)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelController)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelAction)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelAction)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SysModelClassID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SysModelClassID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsLast)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsLast)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsHaveAction)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsHaveAction)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

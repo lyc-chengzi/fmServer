@@ -1,0 +1,15 @@
+﻿
+.lyc_new_InputImage { height: 21px; width:50px; padding:2px 3px; margin-right:2px; cursor: pointer; border: 0px; font-size: 12px; }
+
+.lyc_alert { font-size: 12px; margin: 0px; padding: 0px; position: absolute; z-index: 600; width:322px; }
+.lycAlert_titleSpan{float:left; padding-left:23px;}
+.lyc_alert div.lyc_alert_Header_confirm { font-size: 12px; font-weight: bold; margin: 0px; height: 24px; line-height: 24px; width: 302px; margin: 5px 10px 0px 10px;  }
+.lyc_alert div.lyc_alert_Header_warn { font-size: 12px; font-weight: bold; margin: 0px; height: 24px; line-height: 24px; width: 302px; margin: 5px 10px 0px 10px;  }
+.lyc_alert div.lyc_alert_Header_success { font-size: 12px; font-weight: bold; margin: 0px; height: 24px; line-height: 24px; width: 302px; margin: 5px 10px 0px 10px; }
+.lyc_alert div.lyc_alert_Header_info { font-size: 12px; font-weight: bold; margin: 0px; height: 24px; line-height: 24px; width: 302px; margin: 5px 10px 0px 10px; }
+.lyc_alert div.lyc_alert_Header_error { font-size: 12px; color:Red; font-weight: bold; margin: 0px; height: 24px; line-height: 24px; width: 302px; margin: 5px 10px 0px 10px;  }
+.lyc_alert div.lyc_alert_Content { font-size: 12px;  margin: 0px; height: 80px; width: 290px; margin: 5px 10px 0px 10px; padding:3px 5px 3px 5px; overflow:auto;  }
+.lyc_alert div.lyc_alert_Footer { font-size: 12px; margin: 0px; height: 26px; width: 302px; margin: 5px 10px 0px 10px; text-align: right; }
+
+.lyc_divhidden { margin-top: 0px; margin-left: 0px; float: left; overflow: hidden; position: absolute; left: 0px; top: 0px; float: left; z-index: 580; }
+

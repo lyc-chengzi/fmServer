@@ -1,0 +1,36 @@
+﻿@model FamilyManagerWeb.Models.User
+@{
+    Layout = null;
+}
+<div class="pageContent">
+    <form method="post" action="@Url.Action("doTK", "ApplySub")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent nowrap" layouth="60">
+            <dl>
+                <dt>退款金额：</dt>
+                <dd>
+                    <input type="text" id="tkmoney" name="tkmoney" alt="请输入数字" class="textInput required number" value="@ViewBag.imoney" />
+                </dd>
+            </dl>
+            <div class="divider"></div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">提交</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" id="ID" name="ID" value="@ViewBag.SubID" />
+    </form>
+</div>

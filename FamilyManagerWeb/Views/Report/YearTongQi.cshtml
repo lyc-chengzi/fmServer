@@ -1,0 +1,142 @@
+﻿@using FamilyManagerWeb.Models.ViewModels.highchartsModel
+@{
+    ViewBag.Title = "年度同期对比";
+    Layout = "~/Views/Shared/_Layout_report.cshtml";
+    List<BaseLineSeriesModel> array = ViewBag.ResutlData;
+}
+@section myCSS{
+    <style type="text/css">
+        /******************table的样式******************/
+        table {
+            border-left: 1px solid #0094ff;
+            border-top: 1px solid #0094ff;
+        }
+
+            table thead tr th, table tbody tr td {
+                border-right: 1px solid #0094ff;
+                border-bottom: 1px solid #0094ff;
+            }
+
+            table thead tr th {
+                width: 100px;
+                text-align: center;
+            }
+
+            table tbody tr td {
+                padding: 2px;
+            }
+        /******************table的样式******************/
+    </style>
+}
+@section scripts{
+    <script type="text/javascript">
+        var isLoadingApplyOutInfo = false;
+        //最终要展示的数据集合
+        var dataArray = new Array();
+        //单击某一个y轴数据要处理的事件
+        var yEvent = {
+            click:function (e) {
+                iyear = (this.series.name+"").substr(0,4);
+                imonth = this.index + 1;
+                loadOutInfo(iyear, imonth);
+            }
+        };
+        //拼装数据对象
+        @foreach (var yearData in array)
+        {
+            <text>var moneyArray = new Array();</text>
+            foreach (var item in yearData.data)
+            {
+                <text>moneyArray.push({"y":@item,"events":yEvent});</text>
+            }
+            <text>var dataModel = { "name": "@(yearData.name)", "data": moneyArray };</text>
+            <text>dataArray.push(dataModel);</text>
+        }
+        //console.log(dataArray);
+        $(function () {
+            $('#container').highcharts({
+                title: {
+                    text: '年度同期支出对比',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '',
+                    x: -20
+                },
+                xAxis: {
+                    categories: ['1月', '2月', '3月', '4月', '5月', '6月',
+                    '7月', '8月', '9月', '10月', '11月', '12月']
+                },
+                yAxis: {
+                    title: {
+                        text: '支出 (元)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: '元'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: dataArray
+            });
+        });
+        //ajax加载月度消费明细
+        function loadOutInfo(iyear,imonth){
+            if (isLoadingApplyOutInfo == true) {
+                return false;
+            }
+            isLoadingApplyOutInfo = true;
+            $("#showLoading").show();
+            $("#infoTitle").html(iyear+"年 "+imonth+"月消费明细");
+            $.ajax({
+                url:"@Url.Action("GetMonthApplyOutInfo", "Report")",
+    dataType:"json",
+    data:{"iyear":iyear,"imonth":imonth},
+    success:function (data) {
+        var $tbody = $("#outInfo tbody");
+        $tbody.empty();
+        var listArray = data.jsonObj;
+        for (var i = 0; i <= listArray.length - 1; i++) {
+            var d = listArray[i];
+            //$tbody.append('<tr><td>'+d.iyear+'</td><td>'+d.imonth+'</td><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;">'+d.imoney+'</td></tr>');
+            $tbody.append('<tr><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;">'+d.imoney+'</td></tr>');
+        }
+        $("#showLoading").hide();
+        isLoadingApplyOutInfo = false;
+    },
+    error:function(){
+        alert("获取数据失败！");
+        $("#showLoading").hide();
+        isLoadingApplyOutInfo = false;
+    }
+});
+}
+    </script>
+}
+<div id="bodycontainer" style="position: relative; padding-right: 370px;">
+    <div id="showLoading" style="position: absolute; top: 5px; right: 20px; z-index: 20; width: 25px; height: 25px; display:none;">
+        <img src="~/Content/dwzThemes/default/images/progressBar/progressBar_m.gif" /></div>
+    <div id="infoTitle" style="width: 360px; height: 30px; position: absolute; top: 0; right: 0; text-align: center; font-size: 18px; font-weight: 600; line-height: 30px;"></div>
+    <div id="infoTable" style="width: 360px; height: 100%; overflow: auto; position: absolute; top: 30px; right: 0;">
+        <table id="outInfo" border="1">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th style="width: 150px;">费用科目</th>
+                    <th>支出</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div id="container" style="height: 600px; position: relative;"></div>
+</div>

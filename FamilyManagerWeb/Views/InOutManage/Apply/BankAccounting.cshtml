@@ -1,0 +1,132 @@
+﻿@model FamilyManagerWeb.Models.Apply_Sub
+
+
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    function checkFee2013925(obj) {
+
+        var $box = navTab.getCurrentPanel();
+
+        $.post("@Url.Action("GetFlowTypeInOut","Apply")", { "FlowID": $(obj).val() }, function (data) {
+            if (data == "in")
+            {
+                $("#inUserBank", $box).show();
+                $("#outUserBank", $box).hide();
+
+                $("#FeeItemCheck", $box).hide();
+                $("#FeeItemName", $box).removeClass("required");
+                
+            } else if (data == "out")
+            {
+                $("#inUserBank", $box).hide();
+                $("#outUserBank", $box).show();
+
+                $("#FeeItemCheck", $box).show();
+                $("#FeeItemName", $box).addClass("required");
+            }
+        }, "text");
+    }
+
+
+</script>
+
+<div class="pageContent">	
+	<form method="post" action="@Url.Action("DoBankAccounting", "Apply")" class="pageForm required-validate" onsubmit="return validateCallback(this)">
+        <div class="formBar">
+			<ul style="float:left">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+		<div class="pageFormContent nowrap" layoutH="56">     
+            <dl>
+				<dt>记账日期：</dt>
+				<dd>
+                    <input type="text" name="ApplyDate" class="date textInput readonly focus required" />	
+				</dd>
+			</dl>  
+            <dl>
+				<dt>金额：</dt>
+				<dd>
+                    <input type="text" alt="请输入数字" name="NowMoney" maxlength="26" class="required number" /> 
+				</dd>
+			</dl>       
+			<dl>
+                <dt>资金流动类型：</dt>
+                <dd>
+                    <select class="combox" name="FlowTypeID" onchange="checkFee2013925(this)">
+                        <option value="-1">请选择</option>
+                        @foreach (var item in ViewBag.FlowType)
+                        {
+                            <option value="@item.ID">@item.Name</option>
+                        }
+                    </select>
+                </dd>
+            </dl>
+            <dl id="FeeItemCheck" style="display:none;">
+                <dt>费用项目：</dt>
+                <dd>
+                    <input id="FeeItemID" name="search_Fee.FeeItemID" value="" type="hidden" lookupgroup="search_Fee" />
+                    <input id="FeeItemName" name="search_Fee.FeeItemName" value="" type="text" lookupgroup="search_Fee" />
+                    <a class="btnLook" href="@Url.Action("ShowFeeItemList", "Dialog")" lookupGroup="search_Fee">查找带回</a>
+                </dd>
+            </dl>            
+            <dl id="inUserBank" style="display: none;">
+                <dt>入账银行：</dt>
+                <dd>
+                    <input id="InUserBankID" name="In_bank.UserBankID" value="" type="hidden" lookupgroup="In_bank" />
+                    <table>
+                        <tr>
+                            <td>银行名称：
+                            </td>
+                            <td style="width: 100px;">
+                                <input id="InBankName" name="In_bank.BankName" value="" type="text" lookupgroup="In_bank" />
+                            </td>
+                            <td>银行账号：
+                            </td>
+                            <td>
+                                <input id="InBankNo" name="In_bank.BankNo" type="text" lookupgroup="In_bank" />
+                                <a class="btnLook" href="@Url.Action("ShowBankNoList", "Dialog")" lookupGroup="In_bank">查找带回</a>
+                            </td>
+
+                        </tr>
+                    </table>
+                </dd>
+
+            </dl>
+            <dl id="outUserBank" style="display: none;">
+                <dt>出账银行：</dt>
+                <dd>
+                    <input id="OutUserBankID" name="Out_bank.UserBankID" value="" type="hidden" lookupgroup="Out_bank" />
+                    <table>
+                        <tr>
+                            <td>银行名称：
+                            </td>
+                            <td style="width: 100px;">
+                                <input id="OutBankName" name="Out_bank.BankName" value="" type="text" lookupgroup="Out_bank" />
+                            </td>
+                            <td>银行账号：
+                            </td>
+                            <td>
+                                <input id="OutBankNo" name="Out_bank.BankNo" type="text" lookupgroup="Out_bank" />
+                                <a class="btnLook" href="@Url.Action("ShowBankNoList", "Dialog")" lookupGroup="Out_bank">查找带回</a>
+                            </td>
+
+                        </tr>
+                    </table>
+                </dd>
+            </dl>
+            <dl>
+				<dt>备注信息：</dt>
+				<dd>
+                    <textarea name="cAdd" cols="80" row="2" class="textInput focus"></textarea>
+				</dd>
+			</dl>
+			<div class="divider"></div>			
+		</div>
+    </form>
+</div>
+
+

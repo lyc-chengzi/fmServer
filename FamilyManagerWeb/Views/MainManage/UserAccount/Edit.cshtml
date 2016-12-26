@@ -1,0 +1,56 @@
+﻿@model FamilyManagerWeb.Models.UserAccount
+@{Layout = null;}
+
+<div class="pageContent">
+	
+	<form method="post" action="@Url.Action("doEdit","UserAccount")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">            
+			<dl>
+				<dt>账号类型：</dt>
+				<dd>
+                    @*@Html.EditorFor(model => model.ctypeID)*@
+					@Html.DropDownList("ctypeID",(IEnumerable<SelectListItem>)ViewBag.accountList,(IDictionary<string,object>)ViewBag.attrAccountType)
+				</dd>
+			</dl>
+            <dl>
+				<dt>账户名称：</dt>
+				<dd>
+                    <input type="text" id="cname" name="cname" maxlength="26" class="required" value="@Model.cname" /> 
+				</dd>
+			</dl>
+			<dl>
+				<dt>账户ID：</dt>
+				<dd>
+                    <input type="text" id="loginID" name="loginID" maxlength="26" class="required" value="@Model.loginID" /> 
+				</dd>
+			</dl>
+			<dl>
+				<dt>账户密码：</dt>
+				<dd>
+                    <input type="text" id="loginPwd" name="loginPwd" maxlength="26" class="required" value="@Model.loginPwd" /> 					
+				</dd>
+			</dl>
+            <dl>
+				<dt>密保信息：</dt>
+				<dd>
+                    <textarea rows="5" id="mibao" name="mibao" class="required" style="width:98%;" >@Model.mibao</textarea>					
+				</dd>
+			</dl>
+            <dl>
+				<dt>备注信息：</dt>
+				<dd>
+                    <textarea rows="5" id="cadds" name="cadds" class="required" style="width:98%;" >@Model.cadds</textarea>					
+				</dd>
+			</dl>            
+			<div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+        @Html.Hidden("ID", Model.ID)
+	</form>
+    
+</div>

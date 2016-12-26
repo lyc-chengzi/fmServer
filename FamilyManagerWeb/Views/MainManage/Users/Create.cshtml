@@ -1,0 +1,76 @@
+﻿@model FamilyManagerWeb.Models.User
+
+@{
+    Layout = null;
+}
+
+<div class="pageContent">
+	
+	<form method="post" action="@Url.Action("doCreate","Users")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="56">
+            <dl>
+				<dt>密码：</dt>
+				<dd>
+					<input id="cUserPwd" type="password" name="cUserPwd" class="required alphanumeric" minlength="6" maxlength="20" alt="字母、数字、下划线 6-20位"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>确认密码：</dt>
+				<dd>
+					<input id="testPassWord" type="password" name="testPassWord" class="required" equalto="#cUserPwd"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>姓名：</dt>
+				<dd>
+					<input type="text" id="cUserName" name="cUserName" maxlength="20" class="required" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>性别：</dt>
+				<dd>
+                    <select class="combox" name="cUserSex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>   
+				</dd>
+			</dl>
+			<dl>
+				<dt>角色：</dt>
+				<dd>
+                    <select class="combox" name="cUserRole">
+                        @foreach (var item in ViewBag.RoleList)
+                        {
+                            <option value="@item.ID">@item.cRoleName</option>
+                        }
+                    </select>
+					
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>生日：</dt>
+				<dd>
+					<input type="text" class="date required readonly"  datefmt="yyyy-MM-dd" id="cUserBirthday" name="cUserBirthday"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>座右铭：</dt>
+				<dd>
+					<input type="text" id="cUserSayword" name="cUserSayword" maxlength="200" class="required" />
+				</dd>
+			</dl>
+			<div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+    <input type="hidden" id="dCreateDate" name="dCreateDate" value="@DateTime.Now" />
+    <input type="hidden" id="cUserFlag" name="cUserFlag" value="true" />
+</div>
+
+

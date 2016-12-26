@@ -1,0 +1,111 @@
+﻿@model FamilyManagerWeb.Models.User
+@{
+    Layout = null;
+}
+
+<div class="pageContent">
+    
+    <form method="post" action="@Url.Action("doEdit", "Users")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent nowrap" layouth="56">
+            <dl>
+                <dt>账号：</dt>
+                <dd>
+                    <input type="text" id="cUserCode" name="cUserCode" value="@Model.cUserCode" class="required" readonly="readonly" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>密码：</dt>
+                <dd>
+                    <input id="cUserPwd" type="password" name="cUserPwd" class="required alphanumeric" value="@Model.cUserPwd" minlength="6" maxlength="20" alt="字母、数字、下划线 6-20位"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt>确认密码：</dt>
+                <dd>
+                    <input id="testPassWord" type="password" name="testPassWord" value="@Model.cUserPwd" class="required" equalto="#cUserPwd"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt>姓名：</dt>
+                <dd>
+                    <input type="text" id="cUserName" name="cUserName" value="@Model.cUserName" maxlength="20" class="required" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>性别：</dt>
+                <dd>
+                    <select class="combox" name="cUserSex" value="@Model.cUserSex">
+                        @if (@Model.cUserSex.Trim()=="男")
+                        {
+                            <option value="男" selected="selected">男</option>
+                            <option value="女">女</option>
+                        }
+                        else
+                        {
+                            <option value="男">男</option>
+                            <option value="女" selected="selected">女</option>
+                        }
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>角色：</dt>
+                <dd>
+                    <select id="UserUpdate_UserRole" class="combox" name="cUserRole" value="@Model.cUserRole">
+                        @foreach (var item in ViewBag.RoleList)
+                        {
+                            if (Model.Role.cRoleName==item.cRoleName)
+                            {
+                                <option value="@item.ID" selected="selected">@item.cRoleName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.ID">@item.cRoleName</option>
+                            }
+                            
+                        }
+                    </select>
+
+                </dd>
+            </dl>
+
+            <dl>
+                <dt>生日：</dt>
+                <dd>
+                    <input type="text" id="cUserBirthday" datefmt="yyyy-MM-dd" name="cUserBirthday" value="@Model.cUserBirthday"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt>座右铭：</dt>
+                <dd>
+                    <input type="text" id="cUserSayword" name="cUserSayword" value="@Model.cUserSayword" maxlength="200" class="required" />
+                </dd>
+            </dl>
+            <div class="divider"></div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">提交</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+        <input type="hidden" id="dCreateDate" name="dCreateDate" value="@Model.dCreateDate" />
+        <input type="hidden" id="cUserFlag" name="cUserFlag" value="true" />
+    </form>
+    <script type="text/javascript">
+        //$("#UserUpdate_UserRole").val('@Model.cUserRole');
+    </script>
+</div>

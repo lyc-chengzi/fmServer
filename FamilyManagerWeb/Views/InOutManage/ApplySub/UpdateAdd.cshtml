@@ -1,0 +1,39 @@
+﻿@model FamilyManagerWeb.Models.User
+@{
+    Layout = null;
+}
+
+<div class="pageContent">
+    
+    <form method="post" action="@Url.Action("doUpdateAdd", "ApplySub")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent nowrap" layouth="60">
+            
+            <dl>
+                <dt>备注：</dt>
+                <dd>
+                    <textarea rows="5" id="cAdd" name="cAdd" class="required" style="width:98%;" >@ViewBag.cadd</textarea>
+                </dd>
+            </dl>
+            <div class="divider"></div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">提交</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" id="ID" name="ID" value="@ViewBag.SubID" />
+    </form>
+</div>

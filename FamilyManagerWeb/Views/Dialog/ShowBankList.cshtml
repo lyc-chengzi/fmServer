@@ -1,0 +1,30 @@
+﻿@model IEnumerable<FamilyManagerWeb.Models.Bank>
+@{
+    Layout = null;
+}
+
+
+<div class="pageContent">
+	<table class="table" layoutH="0" targetType="dialog" width="100%">
+		<thead>
+			<tr>
+				<th width="100">银行ID</th>
+				<th width="200">银行名称</th>				
+				<th width="80">查找带回</th>
+			</tr>
+		</thead>
+		<tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+				    <td>@item.ID</td>
+				    <td>@item.cBankName</td>				
+				    <td>
+					    <a class="btnSelect" href="javascript:$.bringBack({BankID:'@item.ID', BankName:'@item.cBankName'})" title="查找带回">选择</a>
+				    </td>
+			    </tr>	
+            }
+					
+		</tbody>
+	</table>
+</div>

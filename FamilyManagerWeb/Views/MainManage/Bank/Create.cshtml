@@ -1,0 +1,26 @@
+﻿@model FamilyManagerWeb.Models.Bank
+
+@{
+    Layout = null;
+}
+
+<div class="pageContent">
+	
+	<form method="post" action="@Url.Action("doCreate","Bank")" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">            
+			<dl>
+				<dt>银行名称：</dt>
+				<dd>
+					<input type="text" id="cBankName" name="cBankName" maxlength="20" class="required" />
+				</dd>
+			</dl>			
+			<div class="divider"></div>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>   
+</div>
