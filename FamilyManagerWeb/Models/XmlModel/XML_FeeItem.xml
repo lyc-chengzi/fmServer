@@ -67,6 +67,12 @@
     <IsLast>false</IsLast>
   </FeeItem>
   <FeeItem>
+    <FeeItemID>12</FeeItemID>
+    <FeeItemName>房屋支出</FeeItemName>
+    <FeeItemClassID>0</FeeItemClassID>
+    <IsLast>false</IsLast>
+  </FeeItem>
+  <FeeItem>
     <FeeItemID>101</FeeItemID>
     <FeeItemName>早饭</FeeItemName>
     <FeeItemClassID>1</FeeItemClassID>
@@ -436,6 +442,36 @@
     <FeeItemID>1102</FeeItemID>
     <FeeItemName>中介费</FeeItemName>
     <FeeItemClassID>11</FeeItemClassID>
+    <IsLast>true</IsLast>
+  </FeeItem>
+  <FeeItem>
+    <FeeItemID>1201</FeeItemID>
+    <FeeItemName>房贷</FeeItemName>
+    <FeeItemClassID>12</FeeItemClassID>
+    <IsLast>true</IsLast>
+  </FeeItem>
+  <FeeItem>
+    <FeeItemID>1202</FeeItemID>
+    <FeeItemName>契税</FeeItemName>
+    <FeeItemClassID>12</FeeItemClassID>
+    <IsLast>true</IsLast>
+  </FeeItem>
+  <FeeItem>
+    <FeeItemID>1203</FeeItemID>
+    <FeeItemName>个税</FeeItemName>
+    <FeeItemClassID>12</FeeItemClassID>
+    <IsLast>true</IsLast>
+  </FeeItem>
+  <FeeItem>
+    <FeeItemID>1204</FeeItemID>
+    <FeeItemName>公共维修基金</FeeItemName>
+    <FeeItemClassID>12</FeeItemClassID>
+    <IsLast>true</IsLast>
+  </FeeItem>
+  <FeeItem>
+    <FeeItemID>1205</FeeItemID>
+    <FeeItemName>首付-海韵嘉园</FeeItemName>
+    <FeeItemClassID>12</FeeItemClassID>
     <IsLast>true</IsLast>
   </FeeItem>
 </FeeItems>
