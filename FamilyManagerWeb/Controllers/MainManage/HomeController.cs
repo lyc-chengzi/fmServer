@@ -166,6 +166,7 @@ namespace FamilyManagerWeb.Controllers
             result.IYear = year;
             result.IMonth = month;
             result.TotalApply = list.Sum(c => c.iMoney);
+            result.TOtalBase = list.Where(c => c.IsBase.Value == true).Sum(c => c.iMoney);
             result.TotalCashApply = list.Where(c => c.CashOrBank == 0).Sum(c=>c.iMoney);
             result.TotalXinYongKaApply = list.Where(c => c.CashOrBank == 1 && c.FlowTypeID == 17).Sum(c => c.iMoney);
             result.TotalOtherApply = result.TotalApply - result.TotalCashApply - result.TotalXinYongKaApply;
@@ -179,15 +180,17 @@ namespace FamilyManagerWeb.Controllers
             int month = mon;
             var data = from m in db.Apply_Main
                        join s in db.Apply_Sub on m.ID equals s.ApplyMain_BillCode
+                       join f in db.FeeItem on s.FeeItemID equals f.FeeItemID
                        where m.iyear == year && m.imonth == month && s.InOutType == "out" && m.ApplyUserID == loginUser.ID
                        select new ApplyList
                        {
                            FeeItemID = s.FeeItemID,
-                           FeeItemName = s.FeeItemName,
+                           FeeItemName = f.FeeItemName,
                            CashOrBank = s.CashOrBank,
                            FlowTypeID = s.FlowTypeID,
                            FlowTypeName = s.FlowTypeName,
-                           iMoney = s.iMoney
+                           iMoney = s.iMoney,
+                           IsBase = f.isBase
                        };
             return data;
         }
@@ -241,6 +244,7 @@ namespace FamilyManagerWeb.Controllers
         public int FlowTypeID { get; set; }
         public string FlowTypeName { get; set; }
         public decimal iMoney { get; set; }
+        public bool? IsBase { get; set; }
     }
 
     public class ApplyMainReprot
@@ -248,6 +252,7 @@ namespace FamilyManagerWeb.Controllers
         public int IYear { get; set; }
         public int IMonth { get; set; }
         public decimal TotalApply { get; set; }
+        public decimal TOtalBase { get; set; }
         public decimal TotalCashApply { get; set; }
         public decimal TotalXinYongKaApply { get; set; }
         public decimal TotalOtherApply { get; set; }

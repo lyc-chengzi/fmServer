@@ -12,6 +12,7 @@
           <EntitySet Name="Apply_Sub_JieKuan" EntityType="FamilyCaiWuDBModel.Store.Apply_Sub_JieKuan" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="apply_temp_sync" EntityType="FamilyCaiWuDBModel.Store.apply_temp_sync" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Banks" EntityType="FamilyCaiWuDBModel.Store.Banks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FeeItem" EntityType="FamilyCaiWuDBModel.Store.FeeItem" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Roles" EntityType="FamilyCaiWuDBModel.Store.Roles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SysModels" EntityType="FamilyCaiWuDBModel.Store.SysModels" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserAccount" EntityType="FamilyCaiWuDBModel.Store.UserAccount" store:Type="Tables" Schema="dbo" />
@@ -134,6 +135,16 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="cBankName" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FeeItem">
+          <Key>
+            <PropertyRef Name="FeeItemID" />
+          </Key>
+          <Property Name="FeeItemID" Type="int" Nullable="false" />
+          <Property Name="FeeItemName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="parentID" Type="int" Nullable="false" />
+          <Property Name="isLast" Type="bit" Nullable="false" />
+          <Property Name="isBase" Type="bit" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -297,6 +308,71 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetMoneyWithFeeType" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iyear" Type="int" Mode="In" />
+          <Parameter Name="imonth" Type="int" Mode="In" />
+          <Parameter Name="feeType" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetZHWMoney" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iyear" Type="int" Mode="In" />
+          <Parameter Name="imonth" Type="int" Mode="In" />
+        </Function>
+        <Function Name="proc_AddBankAccouting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="applyDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="flowTypeID" Type="int" Mode="In" />
+          <Parameter Name="flowTypeName" Type="nvarchar" Mode="In" />
+          <Parameter Name="InOutType" Type="nvarchar" Mode="In" />
+          <Parameter Name="FeeItemID" Type="int" Mode="In" />
+          <Parameter Name="FeeItemName" Type="nvarchar" Mode="In" />
+          <Parameter Name="iMoney" Type="numeric" Mode="In" />
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="InUserBankID" Type="int" Mode="In" />
+          <Parameter Name="OutUserBankID" Type="int" Mode="In" />
+          <Parameter Name="BJieKuan" Type="char" Mode="In" />
+          <Parameter Name="BHuanKuan" Type="char" Mode="In" />
+          <Parameter Name="CAdd" Type="nvarchar" Mode="In" />
+          <Parameter Name="CSouce" Type="nvarchar" Mode="In" />
+          <Parameter Name="CLocation" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="proc_AddCashAccouting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="applyDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="flowTypeID" Type="int" Mode="In" />
+          <Parameter Name="flowTypeName" Type="nvarchar" Mode="In" />
+          <Parameter Name="InOutType" Type="nvarchar" Mode="In" />
+          <Parameter Name="FeeItemID" Type="int" Mode="In" />
+          <Parameter Name="FeeItemName" Type="nvarchar" Mode="In" />
+          <Parameter Name="iMoney" Type="numeric" Mode="In" />
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="BJieKuan" Type="char" Mode="In" />
+          <Parameter Name="BHuanKuan" Type="char" Mode="In" />
+          <Parameter Name="CAdd" Type="nvarchar" Mode="In" />
+          <Parameter Name="CSouce" Type="nvarchar" Mode="In" />
+          <Parameter Name="CLocation" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="proc_CashChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="applyDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="flowTypeID" Type="int" Mode="In" />
+          <Parameter Name="flowTypeName" Type="nvarchar" Mode="In" />
+          <Parameter Name="InOutType" Type="nvarchar" Mode="In" />
+          <Parameter Name="iMoney" Type="numeric" Mode="In" />
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="InUserBankID" Type="int" Mode="In" />
+          <Parameter Name="OutUserBankID" Type="int" Mode="In" />
+          <Parameter Name="CAdd" Type="nvarchar" Mode="In" />
+          <Parameter Name="CSouce" Type="nvarchar" Mode="In" />
+          <Parameter Name="CLocation" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="proc_DeleteAccouting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SubID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="QueryUserApplyInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
+          <Parameter Name="month" Type="int" Mode="In" />
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="QueryUserFullMoney" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -342,6 +418,63 @@
             <End Role="UserModelPower" EntitySet="UserModelPowers" />
           </AssociationSet>
           <EntitySet Name="apply_temp_sync" EntityType="FamilyCaiWuDBModel.apply_temp_sync" />
+          <EntitySet Name="FeeItem" EntityType="FamilyCaiWuDBModel.FeeItem" />
+          <FunctionImport Name="proc_AddBankAccouting" ReturnType="Collection(Int32)">
+            <Parameter Name="applyDate" Mode="In" Type="String" />
+            <Parameter Name="flowTypeID" Mode="In" Type="Int32" />
+            <Parameter Name="flowTypeName" Mode="In" Type="String" />
+            <Parameter Name="InOutType" Mode="In" Type="String" />
+            <Parameter Name="FeeItemID" Mode="In" Type="Int32" />
+            <Parameter Name="FeeItemName" Mode="In" Type="String" />
+            <Parameter Name="iMoney" Mode="In" Type="Decimal" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="InUserBankID" Mode="In" Type="Int32" />
+            <Parameter Name="OutUserBankID" Mode="In" Type="Int32" />
+            <Parameter Name="BJieKuan" Mode="In" Type="String" />
+            <Parameter Name="BHuanKuan" Mode="In" Type="String" />
+            <Parameter Name="CAdd" Mode="In" Type="String" />
+            <Parameter Name="CSouce" Mode="In" Type="String" />
+            <Parameter Name="CLocation" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_AddCashAccouting">
+            <Parameter Name="applyDate" Mode="In" Type="String" />
+            <Parameter Name="flowTypeID" Mode="In" Type="Int32" />
+            <Parameter Name="flowTypeName" Mode="In" Type="String" />
+            <Parameter Name="InOutType" Mode="In" Type="String" />
+            <Parameter Name="FeeItemID" Mode="In" Type="Int32" />
+            <Parameter Name="FeeItemName" Mode="In" Type="String" />
+            <Parameter Name="iMoney" Mode="In" Type="Decimal" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="BJieKuan" Mode="In" Type="String" />
+            <Parameter Name="BHuanKuan" Mode="In" Type="String" />
+            <Parameter Name="CAdd" Mode="In" Type="String" />
+            <Parameter Name="CSouce" Mode="In" Type="String" />
+            <Parameter Name="CLocation" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_CashChange">
+            <Parameter Name="applyDate" Mode="In" Type="String" />
+            <Parameter Name="flowTypeID" Mode="In" Type="Int32" />
+            <Parameter Name="flowTypeName" Mode="In" Type="String" />
+            <Parameter Name="InOutType" Mode="In" Type="String" />
+            <Parameter Name="iMoney" Mode="In" Type="Decimal" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="InUserBankID" Mode="In" Type="Int32" />
+            <Parameter Name="OutUserBankID" Mode="In" Type="Int32" />
+            <Parameter Name="CAdd" Mode="In" Type="String" />
+            <Parameter Name="CSouce" Mode="In" Type="String" />
+            <Parameter Name="CLocation" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_DeleteAccouting">
+            <Parameter Name="SubID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="QueryUserApplyInfo" ReturnType="Collection(FamilyCaiWuDBModel.QueryUserApplyInfo_Result)">
+            <Parameter Name="year" Mode="In" Type="Int32" />
+            <Parameter Name="month" Mode="In" Type="Int32" />
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="QueryUserFullMoney" ReturnType="Collection(FamilyCaiWuDBModel.QueryUserFullMoney_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Apply_Main">
           <Key>
@@ -607,6 +740,44 @@
           <Property Type="String" Name="applyGUID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="applyGUIDDate" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="FeeItem">
+          <Key>
+            <PropertyRef Name="FeeItemID" />
+          </Key>
+          <Property Type="Int32" Name="FeeItemID" Nullable="false" />
+          <Property Type="String" Name="FeeItemName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="parentID" Nullable="false" />
+          <Property Type="Boolean" Name="isLast" Nullable="false" />
+          <Property Type="Boolean" Name="isBase" />
+        </EntityType>
+        <ComplexType Name="QueryUserApplyInfo_Result">
+          <Property Type="DateTime" Name="账单日" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="记账时间" Nullable="true" Precision="23" />
+          <Property Type="Int16" Name="银行现金类型" Nullable="false" />
+          <Property Type="Int32" Name="资金类型ID" Nullable="false" />
+          <Property Type="String" Name="资金类型" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="记账类型" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="费用科目ID" Nullable="true" />
+          <Property Type="String" Name="费用科目" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="记账金额" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="关联银行ID" Nullable="true" />
+          <Property Type="String" Name="关联银行" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="入账银行ID" Nullable="true" />
+          <Property Type="String" Name="入账银行" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="入账银行类型" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="入账银行卡号" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="出账银行ID" Nullable="true" />
+          <Property Type="String" Name="出账银行" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="出账银行类型" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="出账银行卡号" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="备注信息" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="QueryUserFullMoney_Result">
+          <Property Type="Int32" Name="ApplyUserID" Nullable="false" />
+          <Property Type="Decimal" Name="iNowCashMoney" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="bankMoney" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="totalMoney" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -791,6 +962,57 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="FeeItem">
+            <EntityTypeMapping TypeName="FamilyCaiWuDBModel.FeeItem">
+              <MappingFragment StoreEntitySet="FeeItem">
+                <ScalarProperty Name="isBase" ColumnName="isBase" />
+                <ScalarProperty Name="isLast" ColumnName="isLast" />
+                <ScalarProperty Name="parentID" ColumnName="parentID" />
+                <ScalarProperty Name="FeeItemName" ColumnName="FeeItemName" />
+                <ScalarProperty Name="FeeItemID" ColumnName="FeeItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="proc_AddBankAccouting" FunctionName="FamilyCaiWuDBModel.Store.proc_AddBankAccouting" />
+          <FunctionImportMapping FunctionImportName="proc_AddCashAccouting" FunctionName="FamilyCaiWuDBModel.Store.proc_AddCashAccouting" />
+          <FunctionImportMapping FunctionImportName="proc_CashChange" FunctionName="FamilyCaiWuDBModel.Store.proc_CashChange" />
+          <FunctionImportMapping FunctionImportName="proc_DeleteAccouting" FunctionName="FamilyCaiWuDBModel.Store.proc_DeleteAccouting" />
+          <FunctionImportMapping FunctionImportName="QueryUserApplyInfo" FunctionName="FamilyCaiWuDBModel.Store.QueryUserApplyInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FamilyCaiWuDBModel.QueryUserApplyInfo_Result">
+                <ScalarProperty Name="账单日" ColumnName="账单日" />
+                <ScalarProperty Name="记账时间" ColumnName="记账时间" />
+                <ScalarProperty Name="银行现金类型" ColumnName="银行现金类型" />
+                <ScalarProperty Name="资金类型ID" ColumnName="资金类型ID" />
+                <ScalarProperty Name="资金类型" ColumnName="资金类型" />
+                <ScalarProperty Name="记账类型" ColumnName="记账类型" />
+                <ScalarProperty Name="费用科目ID" ColumnName="费用科目ID" />
+                <ScalarProperty Name="费用科目" ColumnName="费用科目" />
+                <ScalarProperty Name="记账金额" ColumnName="记账金额" />
+                <ScalarProperty Name="关联银行ID" ColumnName="关联银行ID" />
+                <ScalarProperty Name="关联银行" ColumnName="关联银行" />
+                <ScalarProperty Name="入账银行ID" ColumnName="入账银行ID" />
+                <ScalarProperty Name="入账银行" ColumnName="入账银行" />
+                <ScalarProperty Name="入账银行类型" ColumnName="入账银行类型" />
+                <ScalarProperty Name="入账银行卡号" ColumnName="入账银行卡号" />
+                <ScalarProperty Name="出账银行ID" ColumnName="出账银行ID" />
+                <ScalarProperty Name="出账银行" ColumnName="出账银行" />
+                <ScalarProperty Name="出账银行类型" ColumnName="出账银行类型" />
+                <ScalarProperty Name="出账银行卡号" ColumnName="出账银行卡号" />
+                <ScalarProperty Name="备注信息" ColumnName="备注信息" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="QueryUserFullMoney" FunctionName="FamilyCaiWuDBModel.Store.QueryUserFullMoney">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FamilyCaiWuDBModel.QueryUserFullMoney_Result">
+                <ScalarProperty Name="ApplyUserID" ColumnName="ApplyUserID" />
+                <ScalarProperty Name="iNowCashMoney" ColumnName="iNowCashMoney" />
+                <ScalarProperty Name="bankMoney" ColumnName="bankMoney" />
+                <ScalarProperty Name="totalMoney" ColumnName="totalMoney" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -16,6 +16,10 @@ namespace FamilyManagerWeb.Controllers
     {
         #region 私有属性
         private static List<FeeItem> listFeeItem = new List<FeeItem>();
+
+        private static List<Models.FeeItem> lfi = new List<Models.FeeItem>();
+
+        private static FamilyCaiWuDBEntities db = new FamilyCaiWuDBEntities(); 
         #endregion
 
         #region 对外开放方法
@@ -210,6 +214,40 @@ namespace FamilyManagerWeb.Controllers
             return tree.ToString();
         }
 
+
+        /// <summary>
+        /// 获取费用项目树withsql
+        /// </summary>
+        /// <returns></returns>
+        public static string GetFeeitemTreeWithSql()
+        {
+            lfi = db.FeeItem.ToList();
+            return GetFeeItemTreeListWithSql(lfi.Where(c => c.parentID == 0).ToList());
+        }
+
+        private static string GetFeeItemTreeListWithSql(List<Models.FeeItem> dataSource)
+        {
+            StringBuilder tree = new StringBuilder("");
+            tree.Clear();
+            foreach (Models.FeeItem item in dataSource)
+            {
+                tree.Append("<li>");
+                if (item.isLast == false)
+                {
+                    tree.Append("<a href=\"javascript:\">").Append(item.FeeItemName).Append("</a>");
+                    tree.Append("<ul>");
+                    tree.Append(GetFeeItemTreeListWithSql(lfi.Where(l => l.parentID == item.FeeItemID).ToList()));
+                    tree.Append("</ul>");
+                }
+                else
+                {
+                    tree.Append("<a href=\"javascript:\" onclick=\"$.bringBack({FeeItemID:'").Append(item.FeeItemID).Append("', FeeItemName:'").Append(item.FeeItemName).Append("'})\">").Append(item.FeeItemName).Append("</a>");
+                }
+                tree.Append("</li>");
+            }
+
+            return tree.ToString();
+        }
         
 
         /*
@@ -332,6 +370,25 @@ namespace FamilyManagerWeb.Controllers
                            )
             ).ToList<FeeItem>();
            
+
+            return list;
+        }
+
+        /// <summary>
+        /// 根据数据库,获取所有费用项目
+        /// </summary>
+        /// <returns></returns>
+        public static List<FeeItem> GetFeeItemListByDB()
+        {
+            List<FeeItem> list = new List<FeeItem>();
+
+            List<Models.FeeItem> lmf = new List<Models.FeeItem>();
+            lmf = db.FeeItem.ToList();
+            foreach (var item in lmf)
+            {
+                var fi = new FeeItem(item.FeeItemID, item.FeeItemName, item.parentID, item.isLast);
+                list.Add(fi);
+            }
 
             return list;
         }

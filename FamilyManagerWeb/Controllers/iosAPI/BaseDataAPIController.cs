@@ -55,7 +55,7 @@ namespace FamilyManagerWeb.Controllers
             LycJsonResult lycResult = new LycJsonResult();
             try
             {
-                lycResult.Data = new JsonResultModel(true, "获取费用科目成功", WebComm.GetFeeItemListByXml());
+                lycResult.Data = new JsonResultModel(true, "获取费用科目成功", WebComm.GetFeeItemListByDB());
             }
             catch
             {

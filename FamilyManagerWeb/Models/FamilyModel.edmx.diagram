@@ -24,6 +24,7 @@
         <AssociationConnector Association="FamilyCaiWuDBModel.FK_UserModelPower_SysModels" ManuallyRouted="false" />
         <AssociationConnector Association="FamilyCaiWuDBModel.FK_UserModelPower_Users" ManuallyRouted="false" />
         <EntityTypeShape EntityType="FamilyCaiWuDBModel.apply_temp_sync" Width="1.5" PointX="14.125" PointY="4.375" />
+        <EntityTypeShape EntityType="FamilyCaiWuDBModel.FeeItem" Width="1.5" PointX="16.75" PointY="4.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
