@@ -29,15 +29,18 @@ namespace FamilyManagerWeb.Controllers
 
         public ActionResult YearTongQi()
         {
+            
             //取出所有年份的数据
             var dataList = (from c in db.Apply_Main
-                            group c by new { iyear = c.iyear, imonth = c.imonth } into g
+                            join s in db.Apply_Sub on c.ID equals s.ApplyMain_BillCode
+                            where s.FeeItemID != 1205 && s.FeeItemID != 1204 && s.FeeItemID != 1203 && s.FeeItemID != 1202 && s.FeeItemID != 1201 && s.FeeItemID != 1102 && s.InOutType == "out"
+                            group s by new { iyear = c.iyear, imonth = c.imonth } into g                            
                             orderby g.Key.iyear, g.Key.imonth
                             select new YearTongQiModel
                             {
                                 iyear = g.Key.iyear,
                                 imonth = g.Key.imonth,
-                                outMoney = g.Sum(c => c.ApplyOutMoney)
+                                outMoney = g.Sum(c => c.iMoney)
                             }).ToList();
             //取出所有年份
             var years = dataList.Select(c => c.iyear).Distinct().ToList();
