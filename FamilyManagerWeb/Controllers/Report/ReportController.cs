@@ -31,17 +31,18 @@ namespace FamilyManagerWeb.Controllers
         {
             
             //取出所有年份的数据
-            var dataList = (from c in db.Apply_Main
-                            join s in db.Apply_Sub on c.ID equals s.ApplyMain_BillCode
-                            where s.FeeItemID != 1205 && s.FeeItemID != 1204 && s.FeeItemID != 1203 && s.FeeItemID != 1202 && s.FeeItemID != 1201 && s.FeeItemID != 1102 && s.InOutType == "out"
-                            group s by new { iyear = c.iyear, imonth = c.imonth } into g                            
-                            orderby g.Key.iyear, g.Key.imonth
-                            select new YearTongQiModel
-                            {
-                                iyear = g.Key.iyear,
-                                imonth = g.Key.imonth,
-                                outMoney = g.Sum(c => c.iMoney)
-                            }).ToList();
+            var _data = from c in db.Apply_Main
+                       join s in db.Apply_Sub on c.ID equals s.ApplyMain_BillCode
+                       where s.InOutType == "out" && s.ID != 2804 && s.ID != 2805
+                       group s by new { iyear = c.iyear, imonth = c.imonth } into g
+                       orderby g.Key.iyear, g.Key.imonth
+                       select new YearTongQiModel
+                       {
+                           iyear = g.Key.iyear,
+                           imonth = g.Key.imonth,
+                           outMoney = g.Sum(c => c.iMoney)
+                       };
+            var dataList = _data.ToList();
             //取出所有年份
             var years = dataList.Select(c => c.iyear).Distinct().ToList();
             //将结果排序，按年份写入数组
@@ -118,11 +119,12 @@ namespace FamilyManagerWeb.Controllers
                                 feeItemName = r.FeeItemName,
                                 imoney = r.iMoney
                             }).ToList();
+                
                 lycResult.Data = new JsonResultModel { bSuccess = true, message = "查询成功", jsonObj = list };
             }
             catch
             {
-                lycResult.Data = new JsonResultModel { bSuccess = false, message = "查询失败", jsonObj = null };
+                lycResult.Data = new JsonResultModel { bSuccess = false, message = "查询失败", jsonObj = new ArrayList() };
             }
             return lycResult;
         }
