@@ -120,25 +120,26 @@
             $("#infoTitle").html(iyear+"年 "+imonth+"月消费明细");
             $.ajax({
                 url:"@Url.Action("GetMonthApplyOutInfo", "Report")",
-    dataType:"json",
-    data:{"iyear":iyear,"imonth":imonth},
-    success:function (data) {
-        var $tbody = $("#outInfo tbody");
-        $tbody.empty();
-        var listArray = data.jsonObj;
-        for (var i = 0; i <= listArray.length - 1; i++) {
-            var d = listArray[i];
-            //$tbody.append('<tr><td>'+d.iyear+'</td><td>'+d.imonth+'</td><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;">'+d.imoney+'</td></tr>');
-            $tbody.append('<tr><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;">'+d.imoney+'</td></tr>');
-        }
-        $("#showLoading").hide();
-        isLoadingApplyOutInfo = false;
-    },
-    error:function(){
-        alert("获取数据失败！");
-        $("#showLoading").hide();
-        isLoadingApplyOutInfo = false;
-    }
+                dataType:"json",
+                data:{"iyear":iyear,"imonth":imonth},
+                success:function (data) {
+                    var $tbody = $("#outInfo tbody");
+                    $tbody.empty();
+                    var listArray = data.jsonObj;
+                    for (var i = 0; i <= listArray.length - 1; i++) {
+                        var d = listArray[i];
+                        var s = d.imoney > 100 ? ' color:red; ' : '';
+                        //$tbody.append('<tr><td>'+d.iyear+'</td><td>'+d.imonth+'</td><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;">'+d.imoney+'</td></tr>');
+                        $tbody.append('<tr><td>'+d.iday+'</td><td>'+d.feeItemName+'</td><td style="text-align:right;'+s+'">'+Highcharts.numberFormat(d.imoney, 2, '.', ',')+'</td></tr>');
+                    }
+                    $("#showLoading").hide();
+                    isLoadingApplyOutInfo = false;
+                },
+                error:function(){
+                    alert("获取数据失败！");
+                    $("#showLoading").hide();
+                    isLoadingApplyOutInfo = false;
+                }
 });
 }
     </script>
