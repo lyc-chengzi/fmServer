@@ -30,6 +30,13 @@
 }
 @section scripts{
     <script type="text/javascript">
+
+        Highcharts.setOptions({
+            lang: {
+                thousandsSeparator: ','
+            }
+        });
+
         var isLoadingApplyOutInfo = false;
         //最终要展示的数据集合
         var dataArray = new Array();
@@ -53,7 +60,10 @@
             <text>dataArray.push(dataModel);</text>
         }
         //console.log(dataArray);
+
+
         $(function () {
+            
             $('#container').highcharts({
                 title: {
                     text: '年度同期支出对比',
@@ -62,6 +72,14 @@
                 subtitle: {
                     text: '',
                     x: -20
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true
+                        }
+                    }
                 },
                 xAxis: {
                     categories: ['1月', '2月', '3月', '4月', '5月', '6月',
@@ -75,7 +93,10 @@
                         value: 0,
                         width: 1,
                         color: '#808080'
-                    }]
+                    }],
+                    labels:{
+                        enabled: true
+                    }
                 },
                 tooltip: {
                     valueSuffix: '元'
